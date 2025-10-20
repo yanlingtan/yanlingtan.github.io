@@ -152,14 +152,51 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-两数之和/LeetCode刷题--两数之和" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-LeetCode刷题--两数之和" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="LeetCode刷题–两数之和"><a href="#LeetCode刷题–两数之和" class="headerlink" title="LeetCode刷题–两数之和"></a>LeetCode刷题–两数之和</h2><h3 id="方法一：暴力枚举"><a href="#方法一：暴力枚举" class="headerlink" title="方法一：暴力枚举"></a>方法一：暴力枚举</h3><p>用两个for循环判断一下即可，注意返回值为数组，要将结果保存在数组中输出</p>
-<h3 id="方法二：哈希表"><a href="#方法二：哈希表" class="headerlink" title="方法二：哈希表"></a>方法二：哈希表</h3><p>先将代码给出<br><code>class Solution {     public int[] twoSum(int[] nums, int target) {         Map&lt;Integer,Integer&gt; hashtable = new HashMap&lt;&gt;();         for(int i = 0; i &lt; nums.length; i++){             if(hashtable.containsKey(target - nums[i])){                 return new int[] {hashtable.get(target - nums[i]), i};             }             hashtable.put(nums[i],i);         }         return new int[0];     } }</code></p>
-<p>然后我们来仔细探讨一下哈希表<br>    哈希表本质上是数组和哈希函数的结合，核心思想是将键通过哈希函数映射到数组的特定位置（索引）。<br>接下来结合这一题，画图理解<br>我们假设target为 9 ，数组里的数据分别为2,3,4,7.初始化哈希表。如下图<br><img src="E:\Myblog\github_blog\source_posts\两数之和\初始化图片.png" alt="初始化"><br>接下来，进入循环，判断target - nums[i]存不存在，即7时候在哈希表中，显然不在，将nums[0]，存入哈希表，结果如下<br><img src="E:/Myblog/github_blog/source/_posts/两数之和/遍历第一次结果.png" alt="遍历第一次结果"><br>同理，可得结果：<br><img src="E:/Myblog/github_blog/source/_posts/两数之和/遍历三次.png" alt="遍历第三次结果"><br>当来到第四个数据时，发现 9-7&#x3D;2，存在，这时返回用数组保存2对应的下标即7对应的下标，再返回。</p>
+        <h2 id="LeetCode刷题–两数之和"><a href="#LeetCode刷题–两数之和" class="headerlink" title="LeetCode刷题–两数之和"></a>LeetCode刷题–两数之和</h2><h3 id="方法一：暴力枚举"><a href="#方法一：暴力枚举" class="headerlink" title="方法一：暴力枚举"></a>方法一：暴力枚举</h3><p>通过两层for循环遍历数组，外层层循环遍历每个元素作为第一个数，内层循环遍历该元素之后的所有元素作为第二个数，判断两数之和是否等于目标值。若找到符合条件的两个数，将它们的下标存入数组并返回。</p>
+<p>优点：思路简单，实现直接；<br>缺点：时间复杂度为 (O(n^2))，当数组长度较大时效率较低。</p>
+<h3 id="方法二：哈希表"><a href="#方法二：哈希表" class="headerlink" title="方法二：哈希表"></a>方法二：哈希表</h3><h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] twoSum(<span class="type">int</span>[] nums, <span class="type">int</span> target) &#123;</span><br><span class="line">        Map&lt;Integer, Integer&gt; hashtable = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            <span class="comment">// 检查哈希表中是否存在与当前元素匹配的目标值</span></span><br><span class="line">            <span class="keyword">if</span> (hashtable.containsKey(target - nums[i])) &#123;</span><br><span class="line">                <span class="comment">// 若存在，返回两个元素的下标</span></span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[] &#123;hashtable.get(target - nums[i]), i&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 若不存在，将当前元素及其下标存入哈希表</span></span><br><span class="line">            hashtable.put(nums[i], i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 题目保证有解，此处仅为语法完整</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="哈希表原理与解题逻辑"><a href="#哈希表原理与解题逻辑" class="headerlink" title="哈希表原理与解题逻辑"></a>哈希表原理与解题逻辑</h4><p>哈希表本质是通过<strong>哈希函数</strong>将键（Key）映射到数组的索引，实现快速的键值对存储与查询（平均时间复杂度 (O(1))）。在本题中，哈希表的键为数组元素值，值为该元素的下标，核心逻辑是利用“两数之和为目标值”的数学关系：若存在两个数 (x) 和 (y) 满足 (x + y &#x3D; target)，则 (y &#x3D; target - x)。</p>
+<h4 id="分步图解（以-nums-2-3-4-7-，target-9-为例）"><a href="#分步图解（以-nums-2-3-4-7-，target-9-为例）" class="headerlink" title="分步图解（以 nums = [2, 3, 4, 7]，target = 9 为例）"></a>分步图解（以 <code>nums = [2, 3, 4, 7]</code>，<code>target = 9</code> 为例）</h4><ol>
+<li><p><strong>初始化</strong>：哈希表为空，准备遍历数组。<br><img src="/LeetCode%E5%88%B7%E9%A2%98--%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/one.png" alt="初始化"></p>
+</li>
+<li><p><strong>遍历第一个元素（<code>nums[0] = 2</code>）</strong>：  </p>
+<ul>
+<li>计算目标值：<code>target - nums[0] = 9 - 2 = 7</code>。  </li>
+<li>检查哈希表：不存在键 <code>7</code>，将 <code>(2, 0)</code> 存入哈希表（键为元素值，值为下标）。<br><img src="/LeetCode%E5%88%B7%E9%A2%98--%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/two.png" alt="遍历第一次结果"></li>
+</ul>
+</li>
+<li><p><strong>遍历第二个元素（<code>nums[1] = 3</code>）</strong>：  </p>
+<ul>
+<li>计算目标值：<code>9 - 3 = 6</code>。  </li>
+<li>检查哈希表：不存在键 <code>6</code>，将 <code>(3, 1)</code> 存入哈希表。</li>
+</ul>
+</li>
+<li><p><strong>遍历第三个元素（<code>nums[2] = 4</code>）</strong>：  </p>
+<ul>
+<li>计算目标值：<code>9 - 4 = 5</code>。  </li>
+<li>检查哈希表：不存在键 <code>5</code>，将 <code>(4, 2)</code> 存入哈希表。<br><img src="/LeetCode%E5%88%B7%E9%A2%98--%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/three.png" alt="遍历第三次结果"></li>
+</ul>
+</li>
+<li><p><strong>遍历第四个元素（<code>nums[3] = 7</code>）</strong>：  </p>
+<ul>
+<li>计算目标值：<code>9 - 7 = 2</code>。  </li>
+<li>检查哈希表：存在键 <code>2</code>，其对应的值为下标 <code>0</code>。  </li>
+<li>返回结果：<code>[0, 3]</code>（即 <code>nums[0] = 2</code> 和 <code>nums[3] = 7</code> 的下标）。</li>
+</ul>
+</li>
+</ol>
+<h4 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h4><ul>
+<li><strong>时间复杂度</strong>：(O(n))，仅需遍历数组一次，每次哈希表操作（查询&#x2F;插入）为 (O(1))。  </li>
+<li><strong>空间复杂度</strong>：(O(n))，最坏情况下需存储数组所有元素到哈希表。</li>
+</ul>
+<p>哈希表解法通过“空间换时间”大幅优化了效率，是本题的最优解。</p>
 
       
 
@@ -172,7 +209,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2025/10/20/%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/LeetCode%E5%88%B7%E9%A2%98--%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/">展开全文 >></a>
+          <a class="article-more-a" href="/2025/10/20/LeetCode%E5%88%B7%E9%A2%98--%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/">展开全文 >></a>
         </p>
       
 
