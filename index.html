@@ -152,17 +152,159 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-two_sum" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-moveZeroes" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="LeetCode刷题–两数之和"><a href="#LeetCode刷题–两数之和" class="headerlink" title="LeetCode刷题–两数之和"></a>LeetCode刷题–两数之和</h2><h3 id="方法一：暴力枚举"><a href="#方法一：暴力枚举" class="headerlink" title="方法一：暴力枚举"></a>方法一：暴力枚举</h3><p>通过两层for循环遍历数组，外层层循环遍历每个元素作为第一个数，内层循环遍历该元素之后的所有元素作为第二个数，判断两数之和是否等于目标值。若找到符合条件的两个数，将它们的下标存入数组并返回。</p>
-<p>优点：思路简单，实现直接；<br>缺点：时间复杂度为 (O(n^2))，当数组长度较大时效率较低。</p>
-<h3 id="方法二：哈希表"><a href="#方法二：哈希表" class="headerlink" title="方法二：哈希表"></a>方法二：哈希表</h3><h4 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] twoSum(<span class="type">int</span>[] nums, <span class="type">int</span> target) &#123;</span><br><span class="line">        Map&lt;Integer, Integer&gt; hashtable = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            <span class="comment">// 检查哈希表中是否存在与当前元素匹配的目标值</span></span><br><span class="line">            <span class="keyword">if</span> (hashtable.containsKey(target - nums[i])) &#123;</span><br><span class="line">                <span class="comment">// 若存在，返回两个元素的下标</span></span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[] &#123;hashtable.get(target - nums[i]), i&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 若不存在，将当前元素及其下标存入哈希表</span></span><br><span class="line">            hashtable.put(nums[i], i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 题目保证有解，此处仅为语法完整</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h2 id="LeetCode-283-移动零"><a href="#LeetCode-283-移动零" class="headerlink" title="LeetCode 283. 移动零"></a>LeetCode 283. 移动零</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>给定一个数组 <code>nums</code>，编写一个函数将所有 <code>0</code> 移动到数组的末尾，同时保持非零元素的相对顺序。</p>
+<p><strong>要求：</strong> 必须在不复制数组的情况下原地对数组进行操作。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入: nums = [0,1,0,3,12]</span><br><span class="line">输出: [1,3,12,0,0]</span><br><span class="line"></span><br><span class="line">输入: nums = [0]</span><br><span class="line">输出: [0]</span><br></pre></td></tr></table></figure>
+
+<h3 id="解题思路：双指针法"><a href="#解题思路：双指针法" class="headerlink" title="解题思路：双指针法"></a>解题思路：双指针法</h3><p>我们使用两个指针来完成任务：</p>
+<ul>
+<li><strong>指针 <code>i</code></strong>：指向下一个非零元素应该放置的位置（即已处理区域的末尾）</li>
+<li><strong>指针 <code>j</code></strong>：遍历数组，寻找非零元素</li>
+</ul>
+<p><strong>算法流程：</strong></p>
+<ol>
+<li>遍历数组，当 <code>nums[j] != 0</code> 时，将其移动到 <code>nums[i]</code> 的位置，然后 <code>i++</code></li>
+<li>遍历完成后，所有非零元素都已按原顺序排列在数组前部</li>
+<li>将剩余位置（从 <code>i</code> 到末尾）填充为 0</li>
+</ol>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">moveZeroes</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; <span class="comment">// 指向下一个非零元素应该放置的位置</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 第一次遍历：将所有非零元素前移</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; nums.length; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (nums[j] != <span class="number">0</span>) &#123;</span><br><span class="line">                nums[i] = nums[j];</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 第二次遍历：将剩余位置填充为零</span></span><br><span class="line">        <span class="keyword">while</span> (i &lt; nums.length) &#123;</span><br><span class="line">            nums[i] = <span class="number">0</span>;</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="为什么选择移动非零元素而非移动零？"><a href="#为什么选择移动非零元素而非移动零？" class="headerlink" title="为什么选择移动非零元素而非移动零？"></a>为什么选择移动非零元素而非移动零？</h3><p><strong>效率对比分析：</strong></p>
+<table>
+<thead>
+<tr>
+<th>操作方式</th>
+<th>时间复杂度</th>
+<th>空间复杂度</th>
+<th>操作次数</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>移动非零元素</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>n 次</td>
+</tr>
+<tr>
+<td>移动零元素</td>
+<td>O(n²) 最坏情况</td>
+<td>O(1)</td>
+<td>可能达到 O(n²)</td>
+</tr>
+</tbody></table>
+<p><strong>移动非零元素的优势：</strong></p>
+<ol>
+<li><strong>操作次数最少</strong>：每个非零元素只移动一次，最后一次性补零</li>
+<li><strong>避免重复操作</strong>：不会对同一个元素进行多次移动</li>
+<li><strong>保持顺序简单</strong>：非零元素按遍历顺序直接前移，自然保持原有顺序</li>
+</ol>
+<p><strong>举例说明：</strong><br>对于数组 <code>[0,0,0,1,2,3]</code>：</p>
+<ul>
+<li><strong>移动非零元素</strong>：只需移动 3 个非零元素 + 3 次补零 &#x3D; 6 次操作</li>
+<li><strong>移动零元素</strong>：需要多次交换，第一个零要移动 3 次，第二个零移动 2 次…操作次数更多</li>
+</ul>
+<h3 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h3><ul>
+<li><strong>时间复杂度</strong>：O(n)，其中 n 是数组长度</li>
+<li><strong>空间复杂度</strong>：O(1)，只使用了常数级别的额外空间</li>
+</ul>
+<h3 id="误区"><a href="#误区" class="headerlink" title="误区"></a>误区</h3><p>在拿到题目时，我第一反应是根据题目提示，判断数据是否为零，如果是，则将其移动到末尾，但在设计过程中发现，如果移动0的话，会有以下几点缺点：<br><strong>操作次数较多</strong><br>假设数组长度为 n，其中非零元素有 k 个，零元素有 n-k 个。<br>操作次数对比：<br>若移动非零元素：只需把 k 个非零元素 “向前搬运” 到正确位置，最后用 n-k 次操作把剩余位置补零。总操作次数是 k + (n - k) &#x3D; n 次。<br>若直接移动零元素：需要把 n-k 个零 “向后搬运”，但每次移动零的时候，还要处理零前面的非零元素（保证非零元素顺序不变）。<br><strong>避免重复操作</strong><br>零元素最终都会被放到数组末尾，且它们之间的相对顺序无关紧要（都是零）。如果直接移动零，可能会对同一个零进行多次移动（比如前面的零往后移时，会推到后面的零，导致后面的零又要再移一次），造成重复劳动。而移动非零元素时，每个非零元素只会被搬运一次（搬到它最终的位置），后续补零也是一次性完成，没有重复操作。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2025/10/21/moveZeroes/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
 
 
-<h4 id="哈希表原理与解题逻辑"><a href="#哈希表原理与解题逻辑" class="headerlink" title="哈希表原理与解题逻辑"></a>哈希表原理与解题逻辑</h4><p>哈希表本质是通过<strong>哈希函数</strong>将键（Key）映射到数组的索引，实现快速的键值对存储与查询（平均时间复杂度 (O(1))）。在本题中，哈希表的键为数组元素值，值为该元素的下标，核心逻辑是利用“两数之和为目标值”的数学关系：若存在两个数 (x) 和 (y) 满足 (x + y &#x3D; target)，则 (y &#x3D; target - x)。</p>
+
+
+  
+    <article id="post-twoSum" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="LeetCode-1-两数之和"><a href="#LeetCode-1-两数之和" class="headerlink" title="LeetCode 1. 两数之和"></a>LeetCode 1. 两数之和</h1><h2 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h2><p>给定一个整数数组 <code>nums</code> 和一个整数目标值 <code>target</code>，请你在该数组中找出<strong>和为目标值</strong> <code>target</code> 的那<strong>两个</strong>整数，并返回它们的数组下标。</p>
+<p>你可以假设每种输入只会对应一个答案，并且你不能使用两次相同的元素。你可以按任意顺序返回答案。</p>
+<p><strong>示例：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">输入：nums = [2,7,11,15], target = 9</span><br><span class="line">输出：[0,1]</span><br><span class="line">解释：因为 nums[0] + nums[1] == 9 ，返回 [0, 1]</span><br><span class="line"></span><br><span class="line">输入：nums = [3,2,4], target = 6</span><br><span class="line">输出：[1,2]</span><br><span class="line"></span><br><span class="line">输入：nums = [3,3], target = 6</span><br><span class="line">输出：[0,1]</span><br></pre></td></tr></table></figure>
+
+<p><strong>提示：</strong></p>
+<ul>
+<li>2 &lt;&#x3D; nums.length &lt;&#x3D; 10⁴</li>
+<li>-10⁹ &lt;&#x3D; nums[i] &lt;&#x3D; 10⁹</li>
+<li>-10⁹ &lt;&#x3D; target &lt;&#x3D; 10⁹</li>
+<li>只会存在一个有效答案</li>
+</ul>
+<h2 id="方法一：暴力枚举"><a href="#方法一：暴力枚举" class="headerlink" title="方法一：暴力枚举"></a>方法一：暴力枚举</h2><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>通过两层循环遍历数组：</p>
+<ul>
+<li>外层循环遍历每个元素作为第一个数</li>
+<li>内层循环遍历该元素之后的所有元素作为第二个数</li>
+<li>判断两数之和是否等于目标值</li>
+</ul>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] twoSum(<span class="type">int</span>[] nums, <span class="type">int</span> target) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> i + <span class="number">1</span>; j &lt; nums.length; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (nums[i] + nums[j] == target) &#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[]&#123;i, j&#125;;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h3><ul>
+<li><strong>时间复杂度</strong>：O(n²)，其中 n 是数组长度</li>
+<li><strong>空间复杂度</strong>：O(1)</li>
+</ul>
+<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><ul>
+<li><strong>优点</strong>：思路简单，实现直接</li>
+<li><strong>缺点</strong>：当数组长度较大时效率较低</li>
+</ul>
+<h2 id="方法二：哈希表（推荐）"><a href="#方法二：哈希表（推荐）" class="headerlink" title="方法二：哈希表（推荐）"></a>方法二：哈希表（推荐）</h2><h3 id="思路-1"><a href="#思路-1" class="headerlink" title="思路"></a>思路</h3><p>利用哈希表实现<strong>一次遍历</strong>解决问题：</p>
+<ul>
+<li>遍历数组，对于每个元素 <code>nums[i]</code>，计算补数 <code>complement = target - nums[i]</code></li>
+<li>检查哈希表中是否存在该补数</li>
+<li>如果存在，直接返回两个下标</li>
+<li>如果不存在，将当前元素和下标存入哈希表</li>
+</ul>
+<h3 id="代码实现-1"><a href="#代码实现-1" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] twoSum(<span class="type">int</span>[] nums, <span class="type">int</span> target) &#123;</span><br><span class="line">        Map&lt;Integer, Integer&gt; hashtable = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            <span class="comment">// 检查哈希表中是否存在与当前元素匹配的目标值</span></span><br><span class="line">            <span class="keyword">if</span> (hashtable.containsKey(target - nums[i])) &#123;</span><br><span class="line">                <span class="comment">// 若存在，返回两个元素的下标</span></span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[] &#123;hashtable.get(target - nums[i]), i&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 若不存在，将当前元素及其下标存入哈希表</span></span><br><span class="line">            hashtable.put(nums[i], i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 题目保证有解，此处仅为语法完整</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="哈希表原理与解题逻辑"><a href="#哈希表原理与解题逻辑" class="headerlink" title="哈希表原理与解题逻辑"></a>哈希表原理与解题逻辑</h3><p>哈希表通过<strong>哈希函数</strong>将键（Key）映射到数组的索引，实现快速的键值对存储与查询（平均时间复杂度 O(1)）。</p>
+<p>在本题中：</p>
+<ul>
+<li><strong>键</strong>：数组元素值</li>
+<li><strong>值</strong>：该元素的下标</li>
+</ul>
+<p>核心逻辑利用数学关系：若存在两个数 x 和 y 满足 x + y &#x3D; target，则 y &#x3D; target - x。</p>
 <h4 id="分步图解（以-nums-2-3-4-7-，target-9-为例）"><a href="#分步图解（以-nums-2-3-4-7-，target-9-为例）" class="headerlink" title="分步图解（以 nums = [2, 3, 4, 7]，target = 9 为例）"></a>分步图解（以 <code>nums = [2, 3, 4, 7]</code>，<code>target = 9</code> 为例）</h4><ol>
 <li><p><strong>初始化</strong>：哈希表为空，准备遍历数组。<br><img src="/.com//one.png" alt="初始化"></p>
 </li>
@@ -192,11 +334,33 @@
 </ul>
 </li>
 </ol>
-<h4 id="复杂度分析"><a href="#复杂度分析" class="headerlink" title="复杂度分析"></a>复杂度分析</h4><ul>
-<li><strong>时间复杂度</strong>：(O(n))，仅需遍历数组一次，每次哈希表操作（查询&#x2F;插入）为 (O(1))。  </li>
-<li><strong>空间复杂度</strong>：(O(n))，最坏情况下需存储数组所有元素到哈希表。</li>
+<h3 id="复杂度分析-1"><a href="#复杂度分析-1" class="headerlink" title="复杂度分析"></a>复杂度分析</h3><ul>
+<li><strong>时间复杂度</strong>：O(n)，仅需遍历数组一次，每次哈希表操作（查询&#x2F;插入）为 O(1)</li>
+<li><strong>空间复杂度</strong>：O(n)，最坏情况下需存储数组所有元素到哈希表</li>
 </ul>
-<p>哈希表解法通过“空间换时间”大幅优化了效率，是本题的最优解。</p>
+<h2 id="方法对比"><a href="#方法对比" class="headerlink" title="方法对比"></a>方法对比</h2><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>时间复杂度</th>
+<th>空间复杂度</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>暴力枚举</td>
+<td>O(n²)</td>
+<td>O(1)</td>
+<td>数据量小，简单实现</td>
+</tr>
+<tr>
+<td>哈希表</td>
+<td>O(n)</td>
+<td>O(n)</td>
+<td><strong>推荐</strong>，数据量大，追求效率</td>
+</tr>
+</tbody></table>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>哈希表解法通过”空间换时间”的策略，将时间复杂度从 O(n²) 优化到 O(n)，是本题的最优解。这种方法的核心思想是利用哈希表的快速查找特性，在遍历过程中动态构建和查询补数关系，从而实现高效解题。</p>
 
       
 
@@ -209,7 +373,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2025/10/20/two_sum/">展开全文 >></a>
+          <a class="article-more-a" href="/2025/10/20/twoSum/">展开全文 >></a>
         </p>
       
 
